@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import Product from "../sequelize/models/product.model.js";
 
 export const createProduct = async (req, res) => {
@@ -43,11 +44,26 @@ export const createProduct = async (req, res) => {
 };
 
 export const getAllProducts = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query; // Default values: page = 1, limit = 10
-
+  const { page = 1, limit = 10, name, category } = req.query; // Default values: page = 1, limit = 10
   try {
     const offset = (page - 1) * limit;
+
+    const whereClause = {};
+
+    if (name) {
+      whereClause.name = {
+        [Op.like]: `%${name}%`, // Search for products where name contains the search string
+      };
+    }
+
+    if (category) {
+      whereClause.category = {
+        [Op.like]: `%${category}%`, // Search for products where category contains the search string
+      };
+    }
+
     const { count, rows: products } = await Product.findAndCountAll({
+      where: whereClause,
       // attributes: ["id", "name", "price", "category",], // Select specific fields if not all fields are needed
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
