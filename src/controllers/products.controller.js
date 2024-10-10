@@ -54,7 +54,7 @@ export const getAllProducts = async (req, res) => {
       order: [["updatedAt", "DESC"]], // Optional: Order by latest updated products
     });
 
-    return res.json({
+    return res.status(200).json({
       totalItems: count,
       totalPages: Math.ceil(count / limit),
       currentPage: page,
@@ -67,8 +67,29 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const getSingleProduct = async (req, res) => {
+  const { productId } = req.params;
+
+  if (isNaN(productId)) {
+    return res.status(400).json({
+      error: "Invalid product ID. It must be a number.",
+    });
+  }
+
   try {
-    const { productId } = req.params;
+    // Find the product by its primary key (ID)
+    const product = await Product.findByPk(productId);
+
+    // Check if the product exists
+    if (!product) {
+      return res.status(404).json({
+        error: "Product not found.",
+      });
+    }
+
+    // Return the product if found
+    return res.status(200).json({
+      product,
+    });
   } catch (error) {
     console.error("Error in getSingleProduct controller", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
