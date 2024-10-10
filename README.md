@@ -52,7 +52,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
 
 ### 1. Create a Product
 
-- **Endpoint**: `POST /api/products`
+- **Endpoint**: `POST /products`
 - **Description**: Creates a new product with `name`, `price`, `description`, and `category`.
 
     - **Request Body**:
@@ -83,7 +83,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
 
 ### 2. Get All Products
 
-- **Endpoint**: `GET /api/products`
+- **Endpoint**: `GET /products`
 - **Description**: Retrieves all products with pagination, search by name, and filter by category.
   
     - **Query Parameters**:
@@ -114,7 +114,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
 
 ### 3. Get Single Product
 
-- **Endpoint**: `GET /api/products/:productId`
+- **Endpoint**: `GET /products/:productId`
 - **Description**: Retrieves a single product by its ID.
 
     - **Response**:
@@ -134,7 +134,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
 
 ### 4. Update Product
 
-- **Endpoint**: `PUT /api/products/:productId`
+- **Endpoint**: `PUT /products/:productId`
 - **Description**: Updates an existing product by its ID.
 
     - **Request Body** (you can update any field):
@@ -165,7 +165,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
 
 ### 5. Delete Product
 
-- **Endpoint**: `DELETE /api/products/:productId`
+- **Endpoint**: `DELETE /products/:productId`
 - **Description**: Deletes a product by its ID.
 
     - **Response**:
