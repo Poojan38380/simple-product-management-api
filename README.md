@@ -46,7 +46,7 @@ This project is a simple API for managing products, built using **Node.js**, **E
    ```bash
    npm start
    ```
-    The server should now be running on `http://localhost:3000`.
+    The server should now be running on `http://localhost:3001`.
 
 ## Endpoints
 
