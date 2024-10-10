@@ -43,9 +43,23 @@ export const createProduct = async (req, res) => {
 };
 
 export const getAllProducts = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query; // Default values: page = 1, limit = 10
+
   try {
-    const products = await Product.findAll();
-    res.json(products);
+    const offset = (page - 1) * limit;
+    const { count, rows: products } = await Product.findAndCountAll({
+      // attributes: ["id", "name", "price", "category",], // Select specific fields if not all fields are needed
+      limit: parseInt(limit, 10),
+      offset: parseInt(offset, 10),
+      order: [["updatedAt", "DESC"]], // Optional: Order by latest updated products
+    });
+
+    return res.json({
+      totalItems: count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      products,
+    });
   } catch (error) {
     console.error("Error in getAllProducts controller", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
