@@ -1,13 +1,40 @@
-import Product from "../models/product.model.js";
+import Product from "../sequelize/models/product.model.js";
 
 export const createProduct = async (req, res) => {
   const { name, price, description, category } = req.body;
+
+  // Check for required fields
+  if (!name || (!price && price !== 0) || !category) {
+    return res.status(400).json({
+      error: "Name, price, and category are required fields.",
+    });
+  }
+
+  // Validate data types
+  if (typeof name !== "string" || typeof category !== "string") {
+    return res.status(400).json({
+      error: "Name and category must be strings.",
+    });
+  }
+
+  if (typeof price !== "number" || price <= 0) {
+    return res.status(400).json({
+      error: "Price must be a number greater than zero.",
+    });
+  }
+
   try {
-    res.status(201).send({
-      name: name,
-      price: price,
-      description: description,
-      category: category,
+    // Create and save the product in the database
+    const product = await Product.create({
+      name,
+      price,
+      description,
+      category,
+    });
+
+    return res.status(201).json({
+      message: "Product created successfully.",
+      product,
     });
   } catch (error) {
     console.error("Error in createProduct controller", error.message);
