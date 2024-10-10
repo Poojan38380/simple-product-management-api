@@ -1,6 +1,14 @@
+import Product from "../models/product.model.js";
+
 export const createProduct = async (req, res) => {
   const { name, price, description, category } = req.body;
   try {
+    res.status(201).send({
+      name: name,
+      price: price,
+      description: description,
+      category: category,
+    });
   } catch (error) {
     console.error("Error in createProduct controller", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -9,7 +17,8 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    res.status(201).send("Route to get all products");
+    const products = await Product.findAll();
+    res.json(products);
   } catch (error) {
     console.error("Error in getAllProducts controller", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -24,6 +33,7 @@ export const getSingleProduct = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 export const updateProduct = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -32,6 +42,7 @@ export const updateProduct = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 export const deleteProduct = async (req, res) => {
   const { productId } = req.params;
   try {
